@@ -1,0 +1,18 @@
+indexes:
+
+- kind: EV
+  properties:
+  - name: batterysize
+  - name: batterysize
+- kind: EV
+  properties:
+  - name: powerrating
+  - name: powerrating
+- kind: EV
+  properties:
+  - name: cost
+  - name: cost
+- kind: EV
+  properties:
+  - name: wltprange
+  - name: wltprange

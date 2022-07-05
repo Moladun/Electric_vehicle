@@ -1,0 +1,196 @@
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Electric Vehcile </title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" i
+    ntegrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://www.gstatic.com/firebasejs/ui/4.4.0/firebase-ui-auth.js"></script>
+<link type="text/css" rel="stylesheet"
+href="https://www.gstatic.com/firebasejs/ui/4.4.0/firebase-ui-auth.css" />
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top ">
+          <div class="container-fluid">
+            <a class="navbar-brand" href="/">EV</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item ms-2">
+                  <a class="nlink" aria-current="page" href="/"><i class="fa fa-home"></i> Home</a>
+                </li>
+              </ul>
+              <div>
+                <span class="me-3 user-email ps-3 nlink " id="user-info"> |</span> 
+                <a href="/compare" class="ps-3 nlink " id="compare"><i class="fa fa-code-compare"></i>Compare |</a>
+                <a href="" class="ps-3 nlink" data-bs-toggle="modal" data-bs-target="#exampleModal" id="login" ><i class="fa fa-lock" ></i> Login</a>
+                <a href="" class="ps-3 me-3 nlink hide" id="log-out"><i class="fa fa-power-off"></i> Logout |</a> 
+                <a href="/add" class="ps-3 nlink hide" id="add-ev"><i class="fa fa-plus"></i> Add EV</a>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+    <div class="container-fluid mt-2 pt-5">
+      <div class="container">
+        {% if get_flashed_messages()[0] %}
+          <div class="alert alert-danger" role="alert">
+              {{get_flashed_messages()[0]}}
+            </div>
+          {% endif %}
+      <div class="row">
+        
+          <div class="col-4 p-4">
+            <!-- filter form -->
+            <form action="/update" method="post"> 
+              <div class="mb-3">
+                <label class="form-label"> Manufacturer</label>
+                <input type="text" class="form-control inputEdit" name="manufacturer" value="{{data['manufacturer']}}" disabled = true required>
+              </div>
+              <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">EV Name</label>
+                <input type="text" class="form-control inputEdit" name="evname" value="{{data['evname']}}" disabled = true required>
+              </div>
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Battery Size</label>
+                <div class="d-flex justify-content-between">
+                  <div class="col me-3">
+                    <input type="number" class="form-control inputEdit" name="batterysize" value="{{data['batterysize']}}" disabled = true required> 
+                  </div>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Power Rating</label>
+                <div class="d-flex justify-content-between">
+                  <div class="col me-3">
+                 
+                    <input type="number" class="form-control inputEdit" name="powerrating" value="{{data['powerrating']}}" disabled = true required>
+                  </div>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">WLTP Range</label>
+                <div class="d-flex justify-content-between">
+                  <div class="col me-3">
+                  
+                    <input type="number" class="form-control inputEdit" name="wltprange" value="{{data['wltprange']}}" disabled = true required>
+                  </div>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Cost</label>
+                <div class="d-flex justify-content-between">
+                  <div class="col me-3">
+                   
+                    <input type="number" class="form-control inputEdit" name="cost" value="{{data['cost']}}" disabled = true required>
+                  </div>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Year</label>
+                <div class="d-flex justify-content-between">
+                  <div class="col me-3">
+                   <input type="number" class="form-control inputEdit" name="year" value="{{data['year']}}" disabled = true required>
+                  </div>
+                  </div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Average rating</label>
+                    <div class="d-flex justify-content-between">
+                      <div class="col me-3">
+                       <input type="number" class="form-control" name="year" value="{{ average_rating }}" readonly>
+                      </div>
+                      </div>
+                      </div>
+              
+              <div class="d-flex">
+                <button class="btn btn-success hide" type="button" id="editbtn"> Edit</button>
+                <button class="btn btn-success" id="updatebtn" type="submit">Update</button>
+                <a href="/delete/{{data['id']}}" class="btn btn-success hide" style="margin-left: 0.5em;" id="deletebtn"> Delete </a>
+              </div>
+              <input type="hidden"  name="id" value="{{data['id']}}" >
+            </form>
+          </div>
+
+          <div class="col-4">
+            <form action="/comment" method="post" id="commentForm" class="hide ">
+            <div>
+             
+              <div class="mb-3">
+                <div class="form-floating">
+                  <textarea class="form-control" placeholder="Leave a comment here" name= "evreview"id="floatingTextarea2" style="height: 100px" required></textarea>
+                  <label for="floatingTextarea2">Comment</label>
+                </div>
+              </div>
+            </div>
+        
+            <select class="form-select form-select-lg mb-3" name= "evrating" aria-label=".form-select-lg example" required >
+              <option value="">Select your rate score</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+            </select>
+            <button type="submit" class="btn btn-success" >Save </button>
+          </div>
+          <input type="hidden"  name="evid" value="{{data['id']}}" >
+       
+        </form>
+       <div class=" col-3">
+        {%for item in commentdata %}
+        <div class="card mt-2" style="width: 18rem;">
+          <div class="card-body">
+            <p class="card-title"> {{item.get('evreview')}} </p>
+              <p class="card-text" style="font-size:12px;font-style:italic"> {{item.get('date').strftime('%Y-%m-%d')}}</p>
+              <h6 class="card-text text-end">Rating: {{item.get('evrating')}}</h6>
+          </div>
+        </div>
+        
+        {%endfor%}
+       </div>
+       </div>
+    </div>
+    
+
+
+    <div class="container-fluid footer">&copy 2022. Allrights reserved. | A project by Yetunde</div>
+
+ <!-- Login modal -->
+ <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div id="firebaseui-auth-container"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- end of login modal -->
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.8.0/firebase-auth.js"></script>
+<script src="{{ url_for('static', filename='app-setup.js') }}"></script>
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
